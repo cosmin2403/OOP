@@ -18,8 +18,8 @@ public class Map {
         return instanceOfMap;
     }
 
-    public void addCell(int x, int y, String cell) {
-        map.get(x).set(y, cell);
+    public void addCell(int x, ArrayList<String> cell) {
+        map.add(x, cell);
     }
 
     public static ArrayList<ArrayList<String>> getMap() {

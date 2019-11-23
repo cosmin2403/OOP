@@ -14,15 +14,23 @@ public class GameInput {
     private final ArrayList<Integer> initialCoordinates;
 
     // Mapa din litere
-    private ArrayList<ArrayList<String>> map;
+    private String[][] map;
 
     // Nr. de runde.
     private int rounds;
 
 
+    public ArrayList<Integer> getInitialCoordinates() {
+        return initialCoordinates;
+    }
+
+    public String[][] getMap() {
+        return map;
+    }
+
     public GameInput(final int rounds, final List<String> moves,
                      final List<String> mPlayersOrder,
-                     final ArrayList<ArrayList<String>> map,
+                     final String[][] map,
                      final ArrayList<Integer> initialCoordinates) {
         this.mPlayersOrder = mPlayersOrder;
         this.moves = moves;

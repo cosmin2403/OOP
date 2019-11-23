@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameInputLoader {
-    ArrayList<ArrayList<String>> map;
+    String[][] map;
     private final String mInputPath;
     private final String mOutputPath;
 
@@ -31,15 +31,17 @@ public class GameInputLoader {
             FileSystem fs = new FileSystem(mInputPath, mOutputPath);
             xDim = fs.nextInt();
             yDim = fs.nextInt();
+            map = new String[xDim][yDim];
             for(int i = 0; i < xDim; i++) {
                 String line = fs.nextWord();
                 for(int j = 0; j < yDim; j++) {
-                    map.get(i).set(j, Character.toString(line.charAt(j)));
+                    map[i][j] = Character.toString(line.charAt(j));
                 }
             }
             noPlayers = fs.nextInt();
             for(int i = 0; i < noPlayers; i++) {
                 String line = fs.nextWord();
+                playerOrder.add(Character.toString(line.charAt(0)));
                 coordinates.add(fs.nextInt());
                 coordinates.add(fs.nextInt());
             }

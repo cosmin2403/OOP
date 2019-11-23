@@ -30,8 +30,12 @@ public class Main {
         Map.getInstance().getMap().forEach(System.out::println);
         System.out.println(noPlayers);
         System.out.println(noRounds);
+
+        //De bagat in switch cu HeroFactory + coordonatele necesare
+
         gameInput.getmPlayersOrder().forEach(System.out::println);
         gameInput.getInitialCoordinates().forEach(System.out::println);
+
         gameInput.getMoves().forEach(System.out::println);
     }
 }

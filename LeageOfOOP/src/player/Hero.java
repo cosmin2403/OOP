@@ -3,6 +3,8 @@ package player;
 
 import Map.Map;
 
+import Visitor.*;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,28 @@ public abstract class Hero {
     private int x;
     private int y;
     private String cell;
-    private String status;
+    private String status = " ";
+    private String race;
+    private Visitor visitor;
+    private boolean posibilityToMove = true;
+    int maxHp;
+    private boolean hasParalysis = false;
+
+    public boolean isHasParalysis() {
+        return hasParalysis;
+    }
+
+    public void setHasParalysis(boolean hasParalysis) {
+        this.hasParalysis = hasParalysis;
+    }
+
+    public Visitor getVisitor() {
+        return visitor;
+    }
+
+    public void setVisitor(Visitor visitor) {
+        this.visitor = visitor;
+    }
 
     public String getCell() {
         return cell;
@@ -34,13 +57,14 @@ public abstract class Hero {
         this.y = y;
     }
 
-    public Hero(String favouritePlace, int x, int y, int initialHP) {
+    public Hero(String favouritePlace, int x, int y, int initialHP, String race) {
         this.XP = 0;
         this.HP = initialHP;
         this.level = 0;
         this.favouritePlace = favouritePlace;
         this.x = x;
         this.y = y;
+        this.race = race;
     }
 
     public int getHP() {
@@ -56,7 +80,7 @@ public abstract class Hero {
     }
 
     public void setHP(int HP) {
-        this.HP -= HP;
+        this.HP = HP;
     }
 
     public int getDamageToDeal() {
@@ -94,6 +118,14 @@ public abstract class Hero {
 
     public void setCellType() {
         this.cellType = Map.getInstance().getMap().get(this.x).get(this.y);
+    }
+
+    public boolean hasPosibilityToMove() {
+        return posibilityToMove;
+    }
+
+    public void setPosibilityToMove(boolean posibilityToMove) {
+        this.posibilityToMove = posibilityToMove;
     }
 
     public int expNeeded() {
@@ -160,4 +192,43 @@ public abstract class Hero {
 
     public abstract float getFieldAmplifier(String type);
     public abstract HeroType returnType();
+    public abstract void acceptVisitor(Visitor visitor);
+
+    public String getRace() {
+        return race;
+    }
+
+    public Visitor getVisitor(Hero hero) {
+        if(hero.getRace().equals("P")) {
+            return new PyroVisitor((Pyromancer) hero);
+        }
+        if(hero.getRace().equals("K")) {
+            return new KnightVisitor((Knight) hero);
+        }
+        if(hero.getRace().equals("R")) {
+            return new RogueVisitor((Rogue) hero);
+        }
+        return null;
+    }
+    public static void fight(java.util.Map<String, List<Hero>> toFight) {
+        for(var x : toFight.entrySet()) {
+            var value = toFight.get(x.getKey());
+            for(int i = 0; i < value.size(); i++) {
+                if(value.get(i).getHP() <= 0 || value.get(i + 1).getHP() <= 0) {
+                    break;
+                }
+                value.get(i).setVisitor(value.get(i).getVisitor(value.get(i + 1)));
+                value.get(i + 1).setVisitor(value.get(i + 1).getVisitor(value.get(i)));
+                value.get(i).acceptVisitor(value.get(i).getVisitor());
+                value.get(i + 1).acceptVisitor(value.get(i + 1).getVisitor());
+                break;
+            }
+        }
+    }
+
+    public int getMaxHp() {
+        return this.maxHp;
+    }
+
+    public abstract void setMaxHp();
 }

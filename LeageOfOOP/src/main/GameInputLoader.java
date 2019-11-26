@@ -14,6 +14,10 @@ public class GameInputLoader {
     private final String mInputPath;
     private final String mOutputPath;
 
+    public String getmOutputPath() {
+        return mOutputPath;
+    }
+
     public GameInputLoader(String mInputPath, String mOutputPath) {
         this.mInputPath = mInputPath;
         this.mOutputPath = mOutputPath;

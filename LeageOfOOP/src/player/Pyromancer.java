@@ -1,12 +1,10 @@
 package player;
 
-import Visitor.HeroVisitor;
-import Visitor.Visitable;
 import Visitor.Visitor;
 
-public class Pyromancer extends Hero implements Visitable {
-    Pyromancer(String favouritePlace, int x, int y, int initialHP) {
-        super(favouritePlace, x, y, initialHP);
+public class Pyromancer extends Hero {
+    Pyromancer(String favouritePlace, int x, int y, int initialHP, String race) {
+        super(favouritePlace, x, y, initialHP, race);
     }
 
     @Override
@@ -16,14 +14,13 @@ public class Pyromancer extends Hero implements Visitable {
         return 0;
     }
 
-    public HeroVisitor theVisitor = new HeroVisitor();
 
-    public int getRoundsPlayed() {
+    public static int getRoundsPlayed() {
         return roundsPlayed;
     }
 
-    public void incrementRoundsPlayer() {
-        this.roundsPlayed++;
+    public static void incrementRoundsPlayer() {
+        roundsPlayed++;
     }
 
     private PyromancerConstants pyroCt = new PyromancerConstants();
@@ -33,16 +30,22 @@ public class Pyromancer extends Hero implements Visitable {
         return HeroType.P;
     }
 
-    int roundsPlayed = 0;
+    static int roundsPlayed = 1;
 
     @Override
-    public void accept(Visitor visitor) {
-        //De venit si completat cu verificarea pt overtime!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        int damageToTake = visitor.visit(this);
-        this.setHP(damageToTake);
+    public void acceptVisitor(Visitor visitor) {
+        visitor.visit(this);
+        int damage = visitor.getDamage();
+        System.out.println("Damage in Pyromancer = " + damage);
+        this.setHP(this.getHP() - damage);
+        //System.out.println(this.getHP() + "Pyro");
         if(this.getHP() <= 0) {
             this.setStatus("dead");
         }
+    }
+    @Override
+    public void setMaxHp() {
+        this.maxHp = pyroCt.getInitialHp()
+                + this.getLevel() * pyroCt.getHpAtLvlUp();
     }
 }

@@ -2,6 +2,10 @@ package player;
 
 public class PyromancerConstants {
 
+    public int getInitialHp() {
+        return 500;
+    }
+
     public float getLandModifier() {
         return 0.25f;
     }
@@ -10,13 +14,10 @@ public class PyromancerConstants {
         return 50;
     }
 
-    public int getBaseDamageFireblast() {
+    public int getFireblastBaseDamage() {
         return 350;
     }
 
-    public int getFireblastDamageModifier() {
-        return 20;
-    }
 
     public float getRogueFireblastModifier() {
         return -0.2f;
@@ -50,7 +51,7 @@ public class PyromancerConstants {
         return 30;
     }
 
-    public int getIgniteUpPerLevel() {
+    public int getIgniteDamageModifier() {
         return 20;
     }
 }

@@ -1,16 +1,18 @@
 package main;
 
 import Map.Map;
-import org.w3c.dom.ls.LSOutput;
+import Visitor.PyroVisitor;
+import fileio.implementations.FileWriter;
 import player.Hero;
 import player.HeroFactory;
-
+import player.Pyromancer;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         GameInputLoader gameInputLoader = new GameInputLoader(args[0], args[1]);
         GameInput gameInput = gameInputLoader.load();
 
@@ -62,37 +64,48 @@ public class Main {
         int u = 0;
         java.util.Map<String, List<Hero>> toFight = new HashMap<>();
         for(int i = 0; i < noRounds; i++) {
-            for(var k : heroes)
+            for(var k : heroes) {
                 k.setCellType();
-
-            // verificam ce playeri trebuie sa se lupte.
-
+            }
             toFight =  Hero.findPlayersInSameCell(heroes);
+            Hero.fight(toFight);
             for(var x : heroes) {
-
-                // Aici o metoda pentru a se lupta jucatorii.
-
-
-
-                // Apoi isi fac miscarea.
-
+                if(x.getStatus().equals("dead")) {
+                    u++;
+                    continue;
+                }
                 x.makeMove(Hero.convertMoveToEnum(gameInput.getMoves().get(u)));
                 u++;
             }
+            Pyromancer.incrementRoundsPlayer();
         }
+
+        FileWriter fileWriter = new FileWriter(args[1]);
 
         for(int i = 0; i < heroes.size(); i++) {
             if(!heroes.get(i).getStatus().equals("dead")) {
-                System.out.println(gameInput.getmPlayersOrder().get(i)
-                        + " " + heroes.get(i).getLevel() + " " + heroes.get(i).getXP()
-                        + " " + heroes.get(i).getHP() + " " + heroes.get(i).getX() + " "
-                        + heroes.get(i).getY());
+                fileWriter.writeWord(gameInput.getmPlayersOrder().get(i));
+                fileWriter.writeWord(" ");
+                fileWriter.writeInt(heroes.get(i).getLevel());
+                fileWriter.writeWord(" ");
+                fileWriter.writeInt(heroes.get(i).getXP());
+                fileWriter.writeWord(" ");
+                fileWriter.writeInt(heroes.get(i).getHP());
+                fileWriter.writeWord(" ");
+                fileWriter.writeInt(heroes.get(i).getX());
+                fileWriter.writeWord(" ");
+                fileWriter.writeInt(heroes.get(i).getY());
+                fileWriter.writeWord(" ");
+                fileWriter.writeNewLine();
             } else {
-                System.out.println(gameInput.getmPlayersOrder().get(i) + " "
-                + heroes.get(i).getStatus());
+                fileWriter.writeWord(gameInput.getmPlayersOrder().get(i));
+                fileWriter.writeWord(" ");
+                fileWriter.writeWord("dead");
+                fileWriter.writeNewLine();
             }
 
         }
+        fileWriter.close();
     }
 }
 

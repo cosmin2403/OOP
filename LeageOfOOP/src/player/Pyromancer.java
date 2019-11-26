@@ -14,15 +14,6 @@ public class Pyromancer extends Hero {
         return 0;
     }
 
-
-    public static int getRoundsPlayed() {
-        return roundsPlayed;
-    }
-
-    public static void incrementRoundsPlayer() {
-        roundsPlayed++;
-    }
-
     private PyromancerConstants pyroCt = new PyromancerConstants();
 
     @Override
@@ -30,7 +21,6 @@ public class Pyromancer extends Hero {
         return HeroType.P;
     }
 
-    static int roundsPlayed = 1;
 
     @Override
     public void acceptVisitor(Visitor visitor) {

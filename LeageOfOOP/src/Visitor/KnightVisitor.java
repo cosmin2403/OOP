@@ -46,8 +46,7 @@ public class KnightVisitor implements Visitor {
         slamDamage = knightConstants.getSlamDamage() + knight.getLevel() * knightConstants.getSlamDamageModifier();
         float slamDamageAfterTerrainAmpl = slamDamage * (1 + knight.getFieldAmplifier(knight.getCellType()));
         slamDamage = slamDamageAfterTerrainAmpl * (1 + knightConstants.getPyromancerSlamModifier());
-        pyromancer.setPosibilityToMove(false);
-
+        pyromancer.setRoundWhenTookStun(Hero.getRoundsPlayed());
         damage = Math.round(executeDamage) + Math.round(slamDamage);
     }
 
@@ -69,7 +68,7 @@ public class KnightVisitor implements Visitor {
         slamDamage = knightConstants.getSlamDamage() + knight.getLevel() * knightConstants.getSlamDamageModifier();
         float slamDamageAfterTerrainAmpl = slamDamage * (1 + knight.getFieldAmplifier(knight.getCellType()));
         slamDamage = slamDamageAfterTerrainAmpl * (1 + knightConstants.getKnightSlamModifier());
-        knight1.setPosibilityToMove(false);
+        knight1.setRoundWhenTookStun(Hero.getRoundsPlayed());
 
         damage = Math.round(executeDamage) + Math.round(slamDamage);
     }
@@ -97,7 +96,7 @@ public class KnightVisitor implements Visitor {
         slamDamage = knightConstants.getSlamDamage() + knight.getLevel() * knightConstants.getSlamDamageModifier();
         float slamDamageAfterTerrainAmpl = slamDamage * (1 + knight.getFieldAmplifier(knight.getCellType()));
         slamDamage = slamDamageAfterTerrainAmpl * (1 + knightConstants.getRogueSlamModifier());
-        rogue.setPosibilityToMove(false);
+        rogue.setRoundWhenTookStun(Hero.getRoundsPlayed());
 
         damage = Math.round(executeDamage) + Math.round(slamDamage);
     }

@@ -1,9 +1,6 @@
 package Visitor;
 
-import player.Knight;
-import player.Pyromancer;
-import player.PyromancerConstants;
-import player.Rogue;
+import player.*;
 
 public class PyroVisitor implements Visitor {
     private PyromancerConstants pyroCt = new PyromancerConstants();
@@ -24,7 +21,7 @@ public class PyroVisitor implements Visitor {
     public void visit(Rogue rogue) {
         float damageAfterTerrainAmplificationA1 = (pyroCt.getFireblastBaseDamage()
                 + pyro.getLevel() * pyroCt.getFireblastUpPerLevel())
-                *(1 + rogue.getFieldAmplifier(rogue.getCellType()));
+                *(1 + pyro.getFieldAmplifier(rogue.getCellType()));
         //System.out.println("DD" + damageAfterTerrainAmplificationA1 + " " + knight.getLevel() + " " + knight.getFieldAmplifier(knight.getCellType()));
         float damageAfterRaceAmplificationA1 = damageAfterTerrainAmplificationA1
                 * (1 + pyroCt.getRogueFireblastModifier());
@@ -32,14 +29,14 @@ public class PyroVisitor implements Visitor {
 
 
         float damageAfterTerrainAmplificationA2 = 0;
-        if(Pyromancer.getRoundsPlayed() %3 == 1) {
+        if(Hero.getRoundsPlayed() % 3 == 1) {
             damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
                     + pyro.getLevel() * pyroCt.getIgniteDamageModifier())
-                    *(1 + rogue.getFieldAmplifier(rogue.getCellType()));
+                    *(1 + pyro.getFieldAmplifier(rogue.getCellType()));
         } else {
             damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteLowDamage()
                     + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
-                    * (1 + rogue.getFieldAmplifier(rogue.getCellType()));
+                    * (1 + pyro.getFieldAmplifier(rogue.getCellType()));
         }
         float damageAfterRaceAmplificationA2 = damageAfterTerrainAmplificationA2
                 *(1 + pyroCt.getRogueFireblastModifier());

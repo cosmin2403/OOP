@@ -1,11 +1,10 @@
 package main;
 
 import Map.Map;
-import Visitor.PyroVisitor;
 import fileio.implementations.FileWriter;
 import player.Hero;
 import player.HeroFactory;
-import player.Pyromancer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,19 +28,7 @@ public class Main {
             }
             Map.getInstance().addCell(i, aux);
         }
-
-        //Verificari citire
-
-//        Map.getInstance().getMap().forEach(System.out::println);
-//        System.out.println(noPlayers);
-//        System.out.println(noRounds);
-
         HeroFactory heroGenerator = new HeroFactory();
-
-//        De bagat in switch cu HeroFactory + coordonatele necesare
-//        gameInput.getmPlayersOrder().forEach(System.out::println);
-//        gameInput.getInitialCoordinates().forEach(System.out::println);
-
         int j = 0;
         for(var x : gameInput.getmPlayersOrder()) {
             heroes.add(heroGenerator.createHero(Hero.convertHeroTypeToEnum(x),
@@ -50,16 +37,7 @@ public class Main {
             j+=2;
         }
 
-//        for(Hero hero : heroes) {
-//            hero.setCellType();
-//        }
 
-//        heroes.forEach((e) -> {
-//            System.out.println(e.getX());
-//            System.out.println(e.getY());
-//            System.out.println(e.returnType());
-//        });
-//        gameInput.getMoves().forEach(System.out::println);
 
         int u = 0;
         java.util.Map<String, List<Hero>> toFight = new HashMap<>();
@@ -77,7 +55,7 @@ public class Main {
                 x.makeMove(Hero.convertMoveToEnum(gameInput.getMoves().get(u)));
                 u++;
             }
-            Pyromancer.incrementRoundsPlayer();
+            Hero.incrementRoundsPlayed();
         }
 
         FileWriter fileWriter = new FileWriter(args[1]);

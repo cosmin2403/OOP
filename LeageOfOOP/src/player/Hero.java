@@ -24,10 +24,56 @@ public abstract class Hero {
     private boolean posibilityToMove = true;
     int maxHp;
     private boolean hasParalysis = false;
+    private int paralysisToTake = 0;
+    private int roundsParalysed;
+    private int roundWhenTookStun;
+
+    public void setXP(int XP) {
+        this.XP = XP;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getParalysisToTake() {
+        return paralysisToTake;
+    }
+
+    public void setParalysisToTake(int paralysisToTake) {
+        this.paralysisToTake = paralysisToTake;
+    }
+
+    public int getRoundsParalysed() {
+        return roundsParalysed;
+    }
+
+    public void setRoundsParalysed(int roundsParalysed) {
+        this.roundsParalysed = roundsParalysed;
+    }
+
+    public int getRoundWhenTookStun() {
+        return roundWhenTookStun;
+    }
+
+    public void setRoundWhenTookStun(int roundWhenTookStun) {
+        this.roundWhenTookStun = roundWhenTookStun;
+    }
 
     public boolean isHasParalysis() {
         return hasParalysis;
     }
+
+    public static int getRoundsPlayed() {
+        return roundsPlayed;
+    }
+
+    public static void incrementRoundsPlayed() {
+        roundsPlayed++;
+    }
+
+    static int roundsPlayed = 1;
+
 
     public void setHasParalysis(boolean hasParalysis) {
         this.hasParalysis = hasParalysis;
@@ -81,6 +127,9 @@ public abstract class Hero {
 
     public void setHP(int HP) {
         this.HP = HP;
+        if(HP <= 0) {
+            this.setStatus("dead");
+        }
     }
 
     public int getDamageToDeal() {
@@ -217,12 +266,37 @@ public abstract class Hero {
                 if(value.get(i).getHP() <= 0 || value.get(i + 1).getHP() <= 0) {
                     break;
                 }
+                if(value.get(i).hasParalysis) {
+                    dealParalysisDamage(value.get(i));
+                    if (value.get(i).getStatus().equals("dead"))
+                        break;
+                } else if(value.get(i + 1).hasParalysis) {
+                    dealParalysisDamage(value.get(i + 1));
+                    if (value.get(i + 1).getStatus().equals("dead"))
+                        break;
+                }
+                if(value.get(i).getHP() <= 0 || value.get(i + 1).getHP() <= 0) {
+                    break;
+                }
                 value.get(i).setVisitor(value.get(i).getVisitor(value.get(i + 1)));
                 value.get(i + 1).setVisitor(value.get(i + 1).getVisitor(value.get(i)));
                 value.get(i).acceptVisitor(value.get(i).getVisitor());
                 value.get(i + 1).acceptVisitor(value.get(i + 1).getVisitor());
+                if(!value.get(i).getStatus().equals("dead") && value.get(i + 1).getStatus().equals("dead")) {
+                    value.get(i).setXP(value.get(i).getWinnerXp(value.get(i + 1)));
+                } else if(value.get(i).getStatus().equals("dead") && !value.get(i + 1).getStatus().equals("dead")) {
+                    value.get(i + 1).setXP(value.get(i + 1).getWinnerXp(value.get(i)));
+                }
                 break;
             }
+        }
+    }
+
+    public static void dealParalysisDamage(Hero hero) {
+        hero.setHP(hero.getHP() - hero.getParalysisToTake());
+        hero.setRoundsParalysed(hero.getRoundsParalysed() - 1);
+        if(hero.roundsParalysed == 0) {
+            hero.setHasParalysis(false);
         }
     }
 

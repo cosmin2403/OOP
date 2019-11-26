@@ -55,7 +55,8 @@ public class RogueVisitor implements Visitor {
                 + rogue.getLevel() * rogueConstants.getParalysisDamageModifier();
         float paralysisDamageAfterTerrainAmpl = paralysisDamage * (1 + rogue.getFieldAmplifier(rogue.getCellType()));
         paralysisDamage = paralysisDamageAfterTerrainAmpl * (1 + rogueConstants.getPyromancerParalysisModifier());
-
+        pyromancer.setParalysisToTake(Math.round(paralysisDamage));
+        pyromancer.setRoundsParalysed(rogue.getFavouritePlace().equals(rogue.getCellType()) ? 3 : 6);
         damage = Math.round(backstabDamage) + Math.round(paralysisDamage);
     }
 
@@ -85,7 +86,8 @@ public class RogueVisitor implements Visitor {
                 + rogue.getLevel() * rogueConstants.getParalysisDamageModifier();
         float paralysisDamageAfterTerrainAmpl = paralysisDamage * (1 + rogue.getFieldAmplifier(rogue.getCellType()));
         paralysisDamage = paralysisDamageAfterTerrainAmpl * (1 + rogueConstants.getKnightParalysisModifier());
-
+        knight.setParalysisToTake(Math.round(paralysisDamage));
+        knight.setRoundsParalysed(rogue.getFavouritePlace().equals(rogue.getCellType()) ? 3 : 6);
         damage = Math.round(backstabDamage) + Math.round(paralysisDamage);
     }
 
@@ -120,6 +122,8 @@ public class RogueVisitor implements Visitor {
                 + rogue.getLevel() * rogueConstants.getParalysisDamageModifier();
         float paralysisDamageAfterTerrainAmpl = paralysisDamage * (1 + rogue.getFieldAmplifier(rogue.getCellType()));
         paralysisDamage = paralysisDamageAfterTerrainAmpl * (1 + rogueConstants.getRogueParalysisModifier());
+        rogue1.setParalysisToTake(Math.round(paralysisDamage));
+        rogue1.setRoundsParalysed(rogue.getFavouritePlace().equals(rogue.getCellType()) ? 3 : 6);
 
         damage = Math.round(backstabDamage) + Math.round(paralysisDamage);
     }

@@ -48,7 +48,8 @@ public class Main {
             toFight =  Hero.findPlayersInSameCell(heroes);
             Hero.fight(toFight);
             for(var x : heroes) {
-                if(x.getStatus().equals("dead")) {
+                if(x.getStatus().equals("dead") || !x.hasPosibilityToMove()) {
+                    x.setPosibilityToMove(true);
                     u++;
                     continue;
                 }

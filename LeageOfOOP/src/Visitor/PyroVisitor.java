@@ -29,20 +29,48 @@ public class PyroVisitor implements Visitor {
 
 
         float damageAfterTerrainAmplificationA2 = 0;
-        if(Hero.getRoundsPlayed() % 3 == 1) {
-            damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
-                    + pyro.getLevel() * pyroCt.getIgniteDamageModifier())
-                    *(1 + pyro.getFieldAmplifier(rogue.getCellType()));
-        } else {
-            damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteLowDamage()
-                    + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
-                    * (1 + pyro.getFieldAmplifier(rogue.getCellType()));
-        }
+        float damageAfterTerrainAmplificationA2BURN = 0;
+        damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
+                + pyro.getLevel() * pyroCt.getIgniteDamageModifier())
+                *(1 + pyro.getFieldAmplifier(rogue.getCellType()));
+
+        damageAfterTerrainAmplificationA2BURN = (pyroCt.getIgniteLowDamage()
+                + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
+                * (1 + pyro.getFieldAmplifier(pyro.getCellType()));
         float damageAfterRaceAmplificationA2 = damageAfterTerrainAmplificationA2
                 *(1 + pyroCt.getRogueFireblastModifier());
-        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);;
+        float BURN = damageAfterTerrainAmplificationA2BURN * (1 + pyroCt.getRogueFireblastModifier());
+        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);
+        this.setBrn(rogue, Math.round(BURN));
+        damage = totalDamageFireblast + totalDamageIgnite ;
+    }
 
-        damage = totalDamageFireblast + totalDamageIgnite;
+    @Override
+    public void visit(Wizard wizard) {
+        float damageAfterTerrainAmplificationA1 = (pyroCt.getFireblastBaseDamage()
+                + pyro.getLevel() * pyroCt.getFireblastUpPerLevel())
+                *(1 + pyro.getFieldAmplifier(wizard.getCellType()));
+        //System.out.println("DD" + damageAfterTerrainAmplificationA1 + " " + knight.getLevel() + " " + knight.getFieldAmplifier(knight.getCellType()));
+        float damageAfterRaceAmplificationA1 = damageAfterTerrainAmplificationA1
+                * (1 + pyroCt.getWizardFireblastModifier());
+        int totalDamageFireblast = Math.round(damageAfterRaceAmplificationA1);
+
+
+        float damageAfterTerrainAmplificationA2 = 0;
+        float damageAfterTerrainAmplificationA2BURN = 0;
+        damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
+                + pyro.getLevel() * pyroCt.getIgniteDamageModifier())
+                *(1 + pyro.getFieldAmplifier(wizard.getCellType()));
+
+        damageAfterTerrainAmplificationA2BURN = (pyroCt.getIgniteLowDamage()
+                + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
+                * (1 + pyro.getFieldAmplifier(pyro.getCellType()));
+        float damageAfterRaceAmplificationA2 = damageAfterTerrainAmplificationA2
+                *(1 + pyroCt.getWizardFireblastModifier());
+        float BURN = damageAfterTerrainAmplificationA2BURN * (1 + pyroCt.getWizardFireblastModifier());
+        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);
+        this.setBrn(wizard, Math.round(BURN));
+        damage = totalDamageFireblast + totalDamageIgnite ;
     }
 
     @Override
@@ -66,20 +94,21 @@ public class PyroVisitor implements Visitor {
 
 
         float damageAfterTerrainAmplificationA2 = 0;
-        if(Pyromancer.getRoundsPlayed() %3 == 1) {
-            damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
+        float damageAfterTerrainAmplificationA2BURN = 0;
+        damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
                     + pyromancer.getLevel() * pyroCt.getIgniteDamageModifier())
-                    *(1 + pyromancer.getFieldAmplifier(pyromancer.getCellType()));
-        } else {
-             damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteLowDamage()
-                    + (pyromancer.getLevel() * pyroCt.getIgniteLowDamageModifier()))
-                    * (1 + pyromancer.getFieldAmplifier(pyromancer.getCellType()));
-        }
+                    *(1 + pyro.getFieldAmplifier(pyromancer.getCellType()));
+
+        damageAfterTerrainAmplificationA2BURN = (pyroCt.getIgniteLowDamage()
+                    + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
+                    * (1 + pyro.getFieldAmplifier(pyromancer.getCellType()));
         float damageAfterRaceAmplificationA2 = damageAfterTerrainAmplificationA2
                 *(1 + pyroCt.getPyromancerFireblastModifier());
-        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);;
-
+        float BURN = damageAfterTerrainAmplificationA2BURN * (1 + pyroCt.getPyromancerFireblastModifier());
+        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);
+        this.setBrn(pyromancer, Math.round(BURN));
         damage = totalDamageFireblast + totalDamageIgnite;
+
     }
 
 
@@ -97,19 +126,25 @@ public class PyroVisitor implements Visitor {
 
 
         float damageAfterTerrainAmplificationA2 = 0;
-        if(Pyromancer.getRoundsPlayed() %3 == 1) {
-            damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
-                    + pyro.getLevel() * pyroCt.getIgniteDamageModifier())
-                    *(1 + knight.getFieldAmplifier(knight.getCellType()));
-        } else {
-            damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteLowDamage()
-                    + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
-                    * (1 + knight.getFieldAmplifier(knight.getCellType()));
-        }
+        float damageAfterTerrainAmplificationA2BURN = 0;
+        damageAfterTerrainAmplificationA2 = (pyroCt.getIgniteBaseDamage()
+                + pyro.getLevel() * pyroCt.getIgniteDamageModifier())
+                *(1 + pyro.getFieldAmplifier(knight.getCellType()));
+
+        damageAfterTerrainAmplificationA2BURN = (pyroCt.getIgniteLowDamage()
+                + (pyro.getLevel() * pyroCt.getIgniteLowDamageModifier()))
+                * (1 + pyro.getFieldAmplifier(pyro.getCellType()));
         float damageAfterRaceAmplificationA2 = damageAfterTerrainAmplificationA2
                 *(1 + pyroCt.getKnightFireblastModifier());
-        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);;
-
+        float BURN = damageAfterTerrainAmplificationA2BURN * (1 + pyroCt.getKnightFireblastModifier());
+        int totalDamageIgnite = Math.round(damageAfterRaceAmplificationA2);
+        this.setBrn(knight, Math.round(BURN));
         damage = totalDamageFireblast + totalDamageIgnite;
+    }
+
+    public void setBrn(Hero hero, int brn) {
+        hero.setWhenGotBurn(Hero.getRoundsPlayed());
+        hero.setBurnToTake(brn);
+        hero.setHasBurn(true);
     }
 }

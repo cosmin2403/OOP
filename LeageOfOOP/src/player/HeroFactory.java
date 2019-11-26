@@ -10,9 +10,9 @@ public class HeroFactory implements PFactory {
         if(heroType == HeroType.R) {
             return new Rogue("W", x, y, 600, "R");
         }
-//        if(heroType == HeroType.W) {
-//            return new Wizard("D", x, y, 400);
-//        }
+        if(heroType == HeroType.W) {
+            return new Wizard("D", x, y, 400, "W");
+        }
         if(heroType == HeroType.P) {
             return new Pyromancer("V", x, y, 500, "P");
         }

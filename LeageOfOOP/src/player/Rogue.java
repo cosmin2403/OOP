@@ -18,6 +18,7 @@ public class Rogue extends Hero {
 
     public Rogue(String favouritePlace, int x, int y, int initialHP, String race) {
         super(favouritePlace, x, y, initialHP, race);
+        this.setMaxHp();
     }
 
     @Override

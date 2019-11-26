@@ -5,6 +5,7 @@ import Visitor.Visitor;
 public class Knight extends Hero{
     Knight(String favouritePlace, int x, int y, int initialHP, String race) {
         super(favouritePlace, x, y, initialHP, race);
+        this.setMaxHp();
     }
 
     private KnightConstants knightConstants = new KnightConstants();

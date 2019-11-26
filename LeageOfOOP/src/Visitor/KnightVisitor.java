@@ -100,4 +100,25 @@ public class KnightVisitor implements Visitor {
 
         damage = Math.round(executeDamage) + Math.round(slamDamage);
     }
+
+    @Override
+    public void visit(Wizard wizard) {
+        float executeDamage = 0;
+        float slamDamage = 0;
+        float limit = testLimit(wizard);
+        if(wizard.getHP() <= limit) {
+            wizard.setStatus("dead");
+            wizard.setHP(0);
+            return;
+        } else {
+            executeDamage = knightConstants.getExecuteBaseDamage() + knight.getLevel() * knightConstants.getExecuteUpPerLevel();
+            float executeDamageAfterTerrainAmpl = executeDamage * (1 + knight.getFieldAmplifier(knight.getCellType()));
+            executeDamage = executeDamageAfterTerrainAmpl * (1 + knightConstants.getWizardExecuteModifier());
+        }
+        slamDamage = knightConstants.getSlamDamage() + knight.getLevel() * knightConstants.getSlamDamageModifier();
+        float slamDamageAfterTerrainAmpl = slamDamage * (1 + knight.getFieldAmplifier(knight.getCellType()));
+        slamDamage = slamDamageAfterTerrainAmpl * (1 + knightConstants.getWizardSlamModifier());
+        wizard.setRoundWhenTookStun(Hero.getRoundsPlayed());
+        damage = Math.round(executeDamage) + Math.round(slamDamage);
+    }
 }

@@ -27,6 +27,43 @@ public abstract class Hero {
     private int paralysisToTake = 0;
     private int roundsParalysed;
     private int roundWhenTookStun;
+    private int burnToTake;
+    private int whenGotBurn;
+    private int roundsBurnt;
+
+    public int getRoundsBurnt() {
+        return roundsBurnt;
+    }
+
+    public void setRoundsBurnt(int roundsBurnt) {
+        this.roundsBurnt = roundsBurnt;
+    }
+
+    private boolean hasBurn = false;
+
+    public boolean isHasBurn() {
+        return hasBurn;
+    }
+
+    public void setHasBurn(boolean hasBurn) {
+        this.hasBurn = hasBurn;
+    }
+
+    public int getBurnToTake() {
+        return burnToTake;
+    }
+
+    public void setBurnToTake(int burnToTake) {
+        this.burnToTake = burnToTake;
+    }
+
+    public int getWhenGotBurn() {
+        return whenGotBurn;
+    }
+
+    public void setWhenGotBurn(int whenGotBurn) {
+        this.whenGotBurn = whenGotBurn;
+    }
 
     public void setXP(int XP) {
         this.XP = XP;
@@ -257,6 +294,9 @@ public abstract class Hero {
         if(hero.getRace().equals("R")) {
             return new RogueVisitor((Rogue) hero);
         }
+        if(hero.getRace().equals("W")) {
+            return new WizardVisitor((Wizard) hero);
+        }
         return null;
     }
     public static void fight(java.util.Map<String, List<Hero>> toFight) {
@@ -268,12 +308,15 @@ public abstract class Hero {
                 }
                 if(value.get(i).hasParalysis) {
                     dealParalysisDamage(value.get(i));
-                    if (value.get(i).getStatus().equals("dead"))
-                        break;
-                } else if(value.get(i + 1).hasParalysis) {
+                }
+                if(value.get(i + 1).hasParalysis) {
                     dealParalysisDamage(value.get(i + 1));
-                    if (value.get(i + 1).getStatus().equals("dead"))
-                        break;
+                }
+                if(value.get(i).hasBurn) {
+                    dealBurnDamage(value.get(i));
+                }
+                if(value.get(i + 1).hasBurn) {
+                    dealBurnDamage(value.get(i + 1));
                 }
                 if(value.get(i).getHP() <= 0 || value.get(i + 1).getHP() <= 0) {
                     break;
@@ -297,6 +340,14 @@ public abstract class Hero {
         hero.setRoundsParalysed(hero.getRoundsParalysed() - 1);
         if(hero.roundsParalysed == 0) {
             hero.setHasParalysis(false);
+        }
+    }
+
+    public static void dealBurnDamage(Hero hero) {
+        hero.setHP(hero.getHP() - hero.getBurnToTake());
+        hero.setRoundsBurnt(hero.getRoundsParalysed() - 1);
+        if(hero.roundsBurnt == 0) {
+            hero.setHasBurn(false);
         }
     }
 

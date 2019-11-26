@@ -54,7 +54,6 @@ public class GameInput {
         boolean membersInstantiated = moves != null && mPlayersOrder != null;
         boolean membersNotEmpty =
                 moves.size() > 0 && mPlayersOrder.size() > 0 && rounds > 0;
-
         return membersInstantiated && membersNotEmpty;
     }
 }

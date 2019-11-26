@@ -1,9 +1,6 @@
 package Visitor;
 
-import player.Knight;
-import player.Pyromancer;
-import player.Rogue;
-import player.RogueConstants;
+import player.*;
 
 public class RogueVisitor implements Visitor {
     private int damage;
@@ -124,6 +121,36 @@ public class RogueVisitor implements Visitor {
         paralysisDamage = paralysisDamageAfterTerrainAmpl * (1 + rogueConstants.getRogueParalysisModifier());
         rogue1.setParalysisToTake(Math.round(paralysisDamage));
         rogue1.setRoundsParalysed(rogue.getFavouritePlace().equals(rogue.getCellType()) ? 3 : 6);
+
+        damage = Math.round(backstabDamage) + Math.round(paralysisDamage);
+    }
+
+    @Override
+    public void visit(Wizard wizard) {
+        float backstabDamage = 0;
+        if(rogue.getBackstabApplied() % 3 == 0 && rogue.getCellType().equals(rogue.getFavouritePlace())) {
+            backstabDamage = rogueConstants.getBackstabBaseDamage()
+                    + rogue.getLevel() * rogueConstants.getBackstabUpPerLevel();
+            float backstabDamageAfterTerrainAmpl = backstabDamage * (1 + rogue.getFieldAmplifier(rogue.getCellType()))
+                    * rogueConstants.getCriticalPercentage();
+            backstabDamage = backstabDamageAfterTerrainAmpl * (1 + rogueConstants.getWizardBackstabModifier());
+            rogue.incrementBackstabApplied();
+        } else {
+            backstabDamage = rogueConstants.getBackstabBaseDamage()
+                    + rogue.getLevel() * rogueConstants.getBackstabUpPerLevel();
+            float backstabDamageAfterTerrainAmpl = backstabDamage * (1 + rogue.getFieldAmplifier(rogue.getCellType()));
+            backstabDamage = backstabDamageAfterTerrainAmpl * (1 + rogueConstants.getWizardBackstabModifier());
+            rogue.incrementBackstabApplied();
+        }
+
+        float paralysisDamage = 0;
+        wizard.setHasParalysis(true);
+        paralysisDamage = rogueConstants.getParalysisBaseDamage()
+                + rogue.getLevel() * rogueConstants.getParalysisDamageModifier();
+        float paralysisDamageAfterTerrainAmpl = paralysisDamage * (1 + rogue.getFieldAmplifier(rogue.getCellType()));
+        paralysisDamage = paralysisDamageAfterTerrainAmpl * (1 + rogueConstants.getWizardParalysisModifier());
+        wizard.setParalysisToTake(Math.round(paralysisDamage));
+        wizard.setRoundsParalysed(rogue.getFavouritePlace().equals(rogue.getCellType()) ? 3 : 6);
 
         damage = Math.round(backstabDamage) + Math.round(paralysisDamage);
     }
